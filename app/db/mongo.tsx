@@ -60,19 +60,38 @@ export async function getRecByID(id:string):Promise<recipe>{
 
 export async function getRecsByName(name: string, offset:number): Promise<recipe[]>{
   const client = new MongoClient(uri);
-  
+
   try {
     const database = client.db('RecInfo');
     const recCol = database.collection<recipe>('Recipes');
     const search = "(?i)" + name + "(?-i)";
 
-    const recs = recCol.find<recipe>({owner:"Zero", name: new RegExp(search)}, {skip: offset})!;
-    
+    //REMOVE LIMIT
+    const recs = await recCol.find<recipe>({ownder:"zero", name: {$regex: search, $options:"i"}}, {skip: offset}).limit(2).toArray();
+
     return JSON.parse(JSON.stringify(recs));
    
   } finally {
     client.close();
   }
+}
+
+export async function getTotalResults(name: string): Promise<number>{
+  const client = new MongoClient(uri);
+
+  try {
+    const database = client.db('RecInfo');
+    const recCol = database.collection<recipe>('Recipes');
+    const search = "(?i)" + name + "(?-i)";
+
+    const totalCount = await recCol.countDocuments({ownder:"zero", name: {$regex: search, $options:"i"}});
+    
+    return Math.ceil(JSON.parse(JSON.stringify(totalCount))/2);
+   
+  } finally {
+    client.close();
+  }  
+
 }
 
 //TODO: Insert recipe

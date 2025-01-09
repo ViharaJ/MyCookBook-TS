@@ -1,10 +1,9 @@
-'use client'
-import { use } from 'react'
 import { recipe, user } from '../db/definitions';
 import RecCard from './recCard';
+import {getRecsByName } from '../db/mongo';
 
-export default function RecGrid({recs, currentPage}:{recs:Promise<recipe[]>, currentPage: Number}){
-    const allRecs = use(recs);
+export default async function RecGrid({query, currentPage}:{query: string, currentPage: number}){
+    let allRecs= await getRecsByName(query, (currentPage-1)*2);
 
     return (
          <div className='flex justify-between max-w-[70%] m-auto p-7 flex-wrap gap-y-11'>

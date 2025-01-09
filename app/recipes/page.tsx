@@ -1,7 +1,8 @@
-import { Suspense } from "react";
-import { getRecipes } from "../db/mongo";
+import { Suspense } from "react";   
 import RecGrid from "../components/recGrid";
 import Search from "../components/search";
+import Pagination from "../components/pagination";
+import { getTotalResults } from "../db/mongo";
 
 export default async function Page(props: {
     searchParams?: Promise<{
@@ -12,14 +13,15 @@ export default async function Page(props: {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const recs = getRecipes((currentPage-1)*4);
+    const totalPages = await getTotalResults(query);
 
     return (
         <div>
             <Search placeholder="Look through recipes..."/>
             <Suspense fallback={<div>Loading...</div>}>
-                <RecGrid recs={recs} currentPage={currentPage}/>
+                <RecGrid query={query} currentPage={currentPage}/>
             </Suspense>
+            <Pagination totalPages={totalPages}/>
         </div>
     );
 }
