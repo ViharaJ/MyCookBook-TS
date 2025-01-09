@@ -5,10 +5,12 @@ import { recipe, user } from "./definitions";
 // Replace the uri string with your connection string.
 const uri:string = process.env.MONGO_URI!;
 
-const client = new MongoClient(uri);
-
 export async function getTags(): Promise<user> {
+  const client = new MongoClient(uri);
+
   try {
+    await client.connect();
+
     const database = client.db('RecInfo');
     const users = database.collection<user>('Users');
 
@@ -21,12 +23,15 @@ export async function getTags(): Promise<user> {
   }
 }
 
-export async function getRecipes(): Promise<recipe[]>{
+export async function getRecipes(offset: number): Promise<recipe[]>{
+  const client = new MongoClient(uri);
     try {
+        await client.connect();
+
         const database = client.db('RecInfo');
         const recCol = database.collection<recipe>('Recipes');
     
-        const recs = await recCol.find<recipe>({ownder:"zero"}).toArray();
+        const recs = await recCol.find<recipe>({ownder:"zero"}, {skip: offset}).toArray();
         
         return JSON.parse(JSON.stringify(recs));
        
@@ -36,7 +41,11 @@ export async function getRecipes(): Promise<recipe[]>{
 }
 
 export async function getRecByID(id:string):Promise<recipe>{
+  const client = new MongoClient(uri);
+
   try {
+    await client.connect();
+
     const database = client.db('RecInfo');
     const recCol = database.collection<recipe>('Recipes');
 
@@ -49,13 +58,15 @@ export async function getRecByID(id:string):Promise<recipe>{
   }  
 }
 
-export async function getRecsByName(name: String): Promise<recipe[]>{
+export async function getRecsByName(name: string, offset:number): Promise<recipe[]>{
+  const client = new MongoClient(uri);
+  
   try {
     const database = client.db('RecInfo');
     const recCol = database.collection<recipe>('Recipes');
     const search = "(?i)" + name + "(?-i)";
 
-    const recs = recCol.find<recipe>({owner:"Zero", name: new RegExp(search)})!;
+    const recs = recCol.find<recipe>({owner:"Zero", name: new RegExp(search)}, {skip: offset})!;
     
     return JSON.parse(JSON.stringify(recs));
    

@@ -3,7 +3,7 @@ import { use } from 'react'
 import { recipe, user } from '../db/definitions';
 import RecCard from './recCard';
 
-export default function RecGrid({recs}:{recs:Promise<recipe[]>}){
+export default function RecGrid({recs, currentPage}:{recs:Promise<recipe[]>, currentPage: Number}){
     const allRecs = use(recs);
 
     return (
