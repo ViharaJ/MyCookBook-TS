@@ -22,8 +22,9 @@ export default function Search({ placeholder }: { placeholder: string }) {
   }, 300);
  
   return (
-    <div>
+    <div className='m-auto py-4 w-52 flex-grow'>
       <input
+        className='h-9 p-2 rounded-full border-2 border-orange-300'
         placeholder={placeholder}
         onChange={(e) => {
           handleSearch(e.target.value);

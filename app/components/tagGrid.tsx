@@ -3,7 +3,13 @@ import { use } from 'react'
 import { user } from '../db/definitions';
 import TagCard from './tagCard';
 
-export default function TagGrid({tags}:{tags:Promise<user>}){
+export default function TagGrid({tags}:{tags:Promise<user> | Error}){
+    if (typeof(tags) == Error) {
+        return (<div>
+
+        </div>);
+    }
+
     const user = use(tags);
     const allTags = user.tags;
 

@@ -3,7 +3,7 @@ export type recipe = {
     name: String,
     tags: Array<string>,
     instr: Array<string>,
-    ingred: Array<string>,
+    ingred: Array<string>
 }
 
 export type user ={
