@@ -5,7 +5,7 @@ import { recipe, user } from "./definitions";
 // Replace the uri string with your connection string.
 const uri:string = process.env.MONGO_URI!;
 
-export async function getTags(): Promise<user | Error> {
+export async function getTags(): Promise<user> {
   const client = new MongoClient(uri);
 
   try {
@@ -17,7 +17,8 @@ export async function getTags(): Promise<user | Error> {
 
     return JSON.parse(JSON.stringify(user));
   } catch(e) {
-    return new Error("Unable to connect");
+    console.log('We found an error');
+    console.log(e);
     
   }finally {
     client.close();
@@ -44,7 +45,7 @@ export async function getRecipes(offset: number): Promise<recipe[]>{
       }
 }
 
-export async function getRecByID(id:string):Promise<recipe | Error>{
+export async function getRecByID(id:string):Promise<recipe>{
   const client = new MongoClient(uri);
 
   try {
@@ -53,12 +54,12 @@ export async function getRecByID(id:string):Promise<recipe | Error>{
     const database = client.db('RecInfo');
     const recCol = database.collection<recipe>('Recipes');
 
-    const rec = recCol.find<recipe>(new ObjectId(id))!;
+    const rec = await recCol.findOne({_id: new ObjectId(id)})!;
     
     return JSON.parse(JSON.stringify(rec));
    
   } catch(e){
-    return new Error("Could not find recipe with this ID");
+    console.log("Could not find recipe with this ID");
   } finally {
     client.close();
   }  

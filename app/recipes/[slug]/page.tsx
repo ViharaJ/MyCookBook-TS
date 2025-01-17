@@ -1,17 +1,26 @@
 import IngBlock from "@/app/components/ingBlock";
 import InstrBlock from "@/app/components/instrBlock";
 import { recipe } from "@/app/db/definitions";
+import { getRecByID } from "@/app/db/mongo";
 
-export default function RecPage({rec}:{rec : recipe}) {
-    return(
+export default async function Page({
+    params,
+  }: {
+    params: Promise<{ slug: string }>
+  }) {
+    
+    const slug = (await params).slug
+    let rec:recipe = await getRecByID(slug);
+    
+   return (
     <div>
-        //Image prop here
+        {/* Image prop here */}
         <h2>{rec.name}</h2>
         <div>
-        <IngBlock ingredient={rec.ingred}/>
+            <IngBlock ingredient={rec.ingred}/>
         </div>
         
-        <InstrBlock instructions={rec.instr}/>
+        <InstrBlock instructions={rec.instructions}/>
     </div>
     );
 }

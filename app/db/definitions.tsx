@@ -1,15 +1,15 @@
 export type recipe = {
-    id: String,
-    name: String,
+    _id: string,
+    name: string,
     tags: Array<string>,
-    instr: Array<string>,
+    instructions: Array<string>,
     ingred: Array<string>
 }
 
 export type user ={
-    id: String, 
-    username: String, 
-    password: String, 
-    email: String, 
-    tags : Array<String>,
+    id: string, 
+    username: string, 
+    password: string, 
+    email: string, 
+    tags : Array<string>,
 }
