@@ -46,3 +46,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - dynamic adjustment of measureing ingredients 
     - need a function to adjust this
 - dynamically grow search bar to a certain width
+
