@@ -13,12 +13,10 @@ export default async function Page({
     let rec:recipe = await getRecByID(slug);
     
    return (
-    <div>
+    <div className="w-2/3 m-auto pt-5">
         {/* Image prop here */}
-        <h2>{rec.name}</h2>
-        <div>
-            <IngBlock ingredient={rec.ingred}/>
-        </div>
+        <h1 className="text-3xl">{rec.name}</h1>
+        <IngBlock ingredient={rec.ingred}/>
         
         <InstrBlock instructions={rec.instructions}/>
     </div>

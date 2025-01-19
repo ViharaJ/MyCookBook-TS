@@ -37,12 +37,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 ## Todo
-
-- throw erros on recs and home
 - create input list
 - create ingrident block 
 - adjust number of boxes per page
-- link to individual rec page
 - dynamic adjustment of measureing ingredients 
     - need a function to adjust this
 - dynamically grow search bar to a certain width

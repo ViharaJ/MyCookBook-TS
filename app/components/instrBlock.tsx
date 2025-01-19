@@ -1,22 +1,19 @@
 export default function InstrBlock({instructions}:{instructions: (string | string[])}){
-
-    if (typeof(instructions) == 'string'){
-        return(
-            <div className="p-3">
-                <ol className="list-decimal list-inside" key={1}>
-                   {instructions} 
-                </ol>
-            </div>
-        ); 
+    let output;
+    if (typeof(instructions) == 'string') {
+        output = <li>{instructions}</li>
+    } else {
+        output = instructions.map((i, ind) =>(
+            <li key={ind}>{i}</li>
+        ))
+        
     }
-
+   
     
     return(
-        <div className="p-3">
-            <ol className="list-decimal list-inside" key={1}>
-                {instructions.map(i =>(
-                    <li>{i}</li>
-                ))}
+        <div>
+            <ol className="list-decimal list-inside">
+                {output}
             </ol>
         </div>
     );
