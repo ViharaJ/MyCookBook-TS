@@ -21,8 +21,9 @@ export default function InsertPage(){
     }
 
     const addIngr = () => {
+        let arr = currIngd.split(';');
         let newSet: string[] = ing;
-        newSet.push(currIngd);
+        newSet = newSet.concat(arr);
         setCurIngd('');
         setIng(newSet);
     }
@@ -30,6 +31,13 @@ export default function InsertPage(){
     const delIngr = (index: number) => {
         let newSet: string[] = ing.filter((el, i) => i != index);
         setIng(newSet);
+    }
+
+    const editInst = (index: number, newInst: string) => {
+        let newSet: string[] =  instr;
+        newSet[index] = newInst;
+        setInst(newSet);
+        console.log(instr);
     }
 
     return(
@@ -50,7 +58,7 @@ export default function InsertPage(){
             if (e.key === 'Enter'){
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 if (currIngd.length > 0){ 
                     addIngr();
                 }
@@ -63,10 +71,12 @@ export default function InsertPage(){
             if (e.key === 'Enter'){
                 e.preventDefault();
                 e.stopPropagation();
-                addInstr();
+                if (currInst.length > 0) {
+                    addInstr();
+                }
             }
         }}/></div>
-        <InstrBlock instructions={instr}/>
+        <InstrBlock instructions={instr} editFnc={editInst}/>
         <button className="hover:shadow-lg p-4 rounded-full bg-cyan-100 block">Create Recipe!</button>
     </form>);
 }
