@@ -65,7 +65,7 @@ export async function getRecByID(id:string):Promise<recipe>{
   }  
 }
 
-export async function getRecsByName(name: string, offset:number): Promise<recipe[]>{
+export async function getRecsByName(name: string, offset:number, recsPerPage: number): Promise<recipe[]>{
   const client = new MongoClient(uri);
 
   try {
@@ -73,8 +73,7 @@ export async function getRecsByName(name: string, offset:number): Promise<recipe
     const recCol = database.collection<recipe>('Recipes');
     const search = "(?i)" + name + "(?-i)";
 
-    //REMOVE LIMIT
-    const recs = await recCol.find<recipe>({ownder:"zero", name: {$regex: search, $options:"i"}}, {skip: offset}).limit(2).toArray();
+    const recs = await recCol.find<recipe>({ownder:"zero", name: {$regex: search, $options:"i"}}, {skip: offset}).limit(recsPerPage).toArray();
 
     return JSON.parse(JSON.stringify(recs));
    
@@ -83,7 +82,7 @@ export async function getRecsByName(name: string, offset:number): Promise<recipe
   }
 }
 
-export async function getTotalResults(name: string): Promise<number>{
+export async function getTotalResults(name: string, recsPerPage: number): Promise<number>{
   const client = new MongoClient(uri);
 
   try {
@@ -93,7 +92,7 @@ export async function getTotalResults(name: string): Promise<number>{
 
     const totalCount = await recCol.countDocuments({ownder:"zero", name: {$regex: search, $options:"i"}});
     
-    return Math.ceil(JSON.parse(JSON.stringify(totalCount))/2);
+    return Math.ceil(JSON.parse(JSON.stringify(totalCount))/recsPerPage);
    
   } finally {
     client.close();
@@ -102,3 +101,19 @@ export async function getTotalResults(name: string): Promise<number>{
 }
 
 //TODO: Insert recipe
+
+export async function submitRec(newR: any): Promise<boolean> {
+  const client = new MongoClient(uri);
+
+  try {
+    const database = client.db('RecInfo');
+    const recCol = database.collection<recipe>('Recipes');
+
+    const submitted = await recCol.insertOne(newR);
+    
+    return submitted.acknowledged;
+   
+  } finally {
+    client.close();
+  }  
+}

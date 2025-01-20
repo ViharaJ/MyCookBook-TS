@@ -37,8 +37,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 ## Todo
-- create input list
-- create ingrident block 
+- submit recipe funcition
+- style newr page
 - adjust number of boxes per page
 - dynamic adjustment of measureing ingredients 
     - need a function to adjust this

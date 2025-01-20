@@ -13,13 +13,15 @@ export default async function Page(props: {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
-    const totalPages = await getTotalResults(query);
+    const perPage = 4;
+    const totalPages = await getTotalResults(query, perPage);
+   
 
     return (
         <div>
             <Search placeholder="Look through recipes..."/>
             <Suspense fallback={<div>Loading...</div>}>
-                <RecGrid query={query} currentPage={currentPage}/>
+                <RecGrid query={query} currentPage={currentPage} recsPerPage={perPage}/>
             </Suspense>
             <Pagination totalPages={totalPages}/>
         </div>

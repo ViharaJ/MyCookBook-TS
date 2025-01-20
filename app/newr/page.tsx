@@ -1,17 +1,17 @@
 'use client'
 
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
 import IngBlock from "../components/ingBlock";
 import InstrBlock from "../components/instrBlock";
+import { submitRec } from "../db/mongo";
 
 export default function InsertPage(){
+    const [name, setName] = useState('');
     const [ing, setIng] = useState<string[]>([]);
     const [instr, setInst] = useState<string[]>([]);
     const [currInst, setCurInst] = useState("");
     const [currIngd, setCurIngd] = useState("");
 
-
-    //TODO: remove ingredient //pass this function into IngBlock
 
     const addInstr = () => {
         let newSet: string[] = instr;
@@ -40,10 +40,23 @@ export default function InsertPage(){
         console.log(instr);
     }
 
+    const handleSubmit = (e: React.FormEvent) => {
+        const newRec ={
+            "name": name,
+            "tags": [],
+            "ingred":ing,
+            "instructions":instr,
+            "ownder": 'zero'
+        };
+
+        //Do something else if not submitted correctly
+        const r = submitRec(newRec);
+    }
+
     return(
-    <form className="max-w-[55%] m-auto p-5 border-2">
+    <form className="max-w-[55%] m-auto p-5 border-2" onSubmit={handleSubmit}>
         <div className="flex justify-between my-2">
-            <label>Title</label> <input className="border-2" type='text'/>
+            <label>Title</label> <input className="border-2" type='text' value={name} onChange={(e) => setName(e.target.value)}/>
         </div> 
 
         <div>
@@ -80,4 +93,5 @@ export default function InsertPage(){
         <button className="hover:shadow-lg p-4 rounded-full bg-cyan-100 block">Create Recipe!</button>
     </form>);
 }
+
 
