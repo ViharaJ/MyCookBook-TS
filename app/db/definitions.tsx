@@ -3,7 +3,10 @@ export type recipe = {
     name: string,
     tags: Array<string>,
     instructions: Array<string>,
-    ingred: Array<string>
+    ingred: Array<string>,
+    servings: number,
+    prepTime: number,
+    cookTime: number
 }
 
 export type user ={
