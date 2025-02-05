@@ -37,19 +37,19 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 ## Todo
--[x]style newr page
--[x]redirect after new rec submisson
--[x] stop time from going negative
--[ ]dynamic adjustment of measureing ingredients 
+- [x]style newr page
+- [x]redirect after new rec submisson
+- [x] stop time from going negative
+- [ ] add measurements to recipe object
+- [ ]dynamic adjustment of measureing ingredients 
     -[ ]need a function to adjust this
 ~~-[ ]dynamically grow search bar to a certain width~~
--[x] search by tags fnc
--[x] search by ingredients fnc
--[ ] be able to upload images
+- [x] search by tags fnc
+- [x] search by ingredients fnc
+- [ ] be able to upload images
 ~~-[ ] on hover, full search bar should light up~~
--[ ] on failed submit, highlight missing fields
--[ ] add measurements to recipe object
--[ ] set a correct type for query
--[ ] create loading page on submision
--[ ] understand why submission takes so long
--[ ] create recipe view page
+- [ ] on failed submit, highlight missing fields
+- [ ] set a correct type for query
+- [ ] create loading page on submision
+- [ ] understand why submission takes so long
+- [ ] create recipe view page
