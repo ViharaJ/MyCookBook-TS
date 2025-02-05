@@ -39,7 +39,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## Todo
 -[x]style newr page
 -[x]redirect after new rec submisson
--[ ] stop time from going negative
+-[x] stop time from going negative
 -[ ]dynamic adjustment of measureing ingredients 
     -[ ]need a function to adjust this
 ~~-[ ]dynamically grow search bar to a certain width~~
@@ -52,3 +52,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 -[ ] set a correct type for query
 -[ ] create loading page on submision
 -[ ] understand why submission takes so long
+-[ ] create recipe view page

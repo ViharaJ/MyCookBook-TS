@@ -12,7 +12,7 @@ export default function InsertPage(){
     const [instr, setInst] = useState<string[]>([]);
     const [currInst, setCurInst] = useState("");
     const [currIngd, setCurIngd] = useState("");
-    const [timeServ, setTimeServ] = useState<string[]>(["","",""]);
+    const [timeServ, setTimeServ] = useState<string[]>(["1","0","0"]);
     const router = useRouter();
 
     const addInstr = () => {
@@ -72,23 +72,20 @@ export default function InsertPage(){
 
     const updateTimeServ = (i:number, n: string) => {
         let v = timeServ;
-        if (Number(n) >= 0){
-            v[i] = n;
-            setTimeServ(v);
-        }
-       
+        v[i] = n;
+        setTimeServ(v);
     }
 
     return(
     <form className="max-w-[90%] m-auto p-5 border-2 flex flex-col" onSubmit={handleSubmit} >
         <div className="my-2">
-            <label>Title</label> <input className="border-2 w-[20em]" type='text' value={name} onChange={(e) => setName(e.target.value)}/>
+            <label>Title</label> <input className="border-2 w-[20em]" type='text' required value={name} onChange={(e) => setName(e.target.value)}/>
         </div> 
 
         <div className="xs:flex-col justify-between my-6 md:flex">
-            <div className="xs:my-2"><label className='mr-4'>Servings</label><input className="w-14 border-2 border-black" type='number' onChange={(e) => updateTimeServ(0, e.target.value)}/></div>
-            <div className="xs:my-2"><label className='mr-4'>Prep Time</label><input className="w-14 border-2 border-black" type='number' onChange={(e) => updateTimeServ(1, e.target.value)}/> min</div>
-            <div className="xs:my-2"><label className='mr-4'>Cooking Time</label><input className="w-14 border-2 border-black" type='number' onChange={(e) => updateTimeServ(2, e.target.value)}/> min</div>
+            <div className="xs:my-2"><label className='mr-4'>Servings</label><input className="w-14 border-2 border-black" type='number' required min= '1' onChange={(e) => updateTimeServ(0, e.target.value)}/></div>
+            <div className="xs:my-2"><label className='mr-4'>Prep Time</label><input className="w-14 border-2 border-black" type='number' min='0' onChange={(e) => updateTimeServ(1, e.target.value)}/> min</div>
+            <div className="xs:my-2"><label className='mr-4'>Cooking Time</label><input className="w-14 border-2 border-black" type='number' required min='0' onChange={(e) => updateTimeServ(2, e.target.value)}/> min</div>
         </div>
 
         <div className="flex flex-row">
