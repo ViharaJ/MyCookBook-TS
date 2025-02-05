@@ -1,6 +1,6 @@
 'use client'
 
-import {useState } from "react";
+import {DragEventHandler, useState } from "react";
 import IngBlock from "../components/ingBlock";
 import InstrBlock from "../components/instrBlock";
 import { submitRec } from "../db/mongo";
@@ -76,12 +76,24 @@ export default function InsertPage(){
         setTimeServ(v);
     }
 
+    const handleDrop = (e:React.DragEvent) => {
+        console.log('got somethign');
+        e.preventDefault();
+    }
+
     return(
     <form className="max-w-[90%] m-auto p-5 border-2 flex flex-col" onSubmit={handleSubmit} >
         <div className="my-2">
             <label>Title</label> <input className="border-2 w-[20em]" type='text' required value={name} onChange={(e) => setName(e.target.value)}/>
         </div> 
 
+        <div id="drop_zone" onDrop={handleDrop} 
+            onDragOver={(e) => e.preventDefault()} 
+            onDragLeave={(e) => e.preventDefault()} 
+            onDragEnter={(e) => e.preventDefault()} 
+            className="relative w-full h-24 border-2 p-2 flex">
+            <p className="m-auto ">Drag image(s) to this <span className="italic">drop zone</span>.</p>
+        </div>
         <div className="xs:flex-col justify-between my-6 md:flex">
             <div className="xs:my-2"><label className='mr-4'>Servings</label><input className="w-14 border-2 border-black" type='number' required min= '1' onChange={(e) => updateTimeServ(0, e.target.value)}/></div>
             <div className="xs:my-2"><label className='mr-4'>Prep Time</label><input className="w-14 border-2 border-black" type='number' min='0' onChange={(e) => updateTimeServ(1, e.target.value)}/> min</div>
