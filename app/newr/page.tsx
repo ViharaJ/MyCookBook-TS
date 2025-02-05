@@ -1,9 +1,10 @@
 'use client'
 
-import { FormEventHandler, useState } from "react";
+import {useState } from "react";
 import IngBlock from "../components/ingBlock";
 import InstrBlock from "../components/instrBlock";
 import { submitRec } from "../db/mongo";
+import { useRouter } from "next/navigation";
 
 export default function InsertPage(){
     const [name, setName] = useState('');
@@ -12,7 +13,7 @@ export default function InsertPage(){
     const [currInst, setCurInst] = useState("");
     const [currIngd, setCurIngd] = useState("");
     const [timeServ, setTimeServ] = useState<string[]>(["","",""]);
-
+    const router = useRouter();
 
     const addInstr = () => {
         let newSet: string[] = instr;
@@ -22,7 +23,7 @@ export default function InsertPage(){
     }
 
     const addIngr = () => {
-        let arr = currIngd.split(';');
+        let arr = currIngd.split(',');
         let newSet: string[] = ing;
         newSet = newSet.concat(arr);
         setCurIngd('');
@@ -42,8 +43,8 @@ export default function InsertPage(){
     }
 
     const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
         if (!checkRequired()) {
-            e.preventDefault();
             return;
         }
     
@@ -55,8 +56,13 @@ export default function InsertPage(){
             "ownder": 'zero'
         };
 
-        //Do something else if not submitted correctly
-        const r = submitRec(newRec);
+        //TODO: Do something else if not submitted correctly
+        submitRec(newRec).then((r) => {
+            if (r != null){
+                router.push(`/recipes/${r}`);
+            }
+        })
+        
     }
 
     const checkRequired = () => {
@@ -66,23 +72,27 @@ export default function InsertPage(){
 
     const updateTimeServ = (i:number, n: string) => {
         let v = timeServ;
-        v[i] = n;
-        setTimeServ(v);
+        if (Number(n) >= 0){
+            v[i] = n;
+            setTimeServ(v);
+        }
+       
     }
 
     return(
-    <form className="max-w-[55%] m-auto p-5 border-2 flex flex-col" onSubmit={handleSubmit} >
+    <form className="max-w-[90%] m-auto p-5 border-2 flex flex-col" onSubmit={handleSubmit} >
         <div className="my-2">
-            <label>Title</label> <input className="border-2" type='text' value={name} onChange={(e) => setName(e.target.value)}/>
+            <label>Title</label> <input className="border-2 w-[20em]" type='text' value={name} onChange={(e) => setName(e.target.value)}/>
         </div> 
 
-        <div className="flex">
-            <div><label className="">Servings</label><input type='number' onChange={(e) => updateTimeServ(0, e.target.value)}/></div>
-            <div><label>Prep Time</label><input type='number' onChange={(e) => updateTimeServ(1, e.target.value)}/></div>
-            <div><label>Cooking Time</label><input type='number' onChange={(e) => updateTimeServ(2, e.target.value)}/></div>
+        <div className="xs:flex-col justify-between my-6 md:flex">
+            <div className="xs:my-2"><label className='mr-4'>Servings</label><input className="w-14 border-2 border-black" type='number' onChange={(e) => updateTimeServ(0, e.target.value)}/></div>
+            <div className="xs:my-2"><label className='mr-4'>Prep Time</label><input className="w-14 border-2 border-black" type='number' onChange={(e) => updateTimeServ(1, e.target.value)}/> min</div>
+            <div className="xs:my-2"><label className='mr-4'>Cooking Time</label><input className="w-14 border-2 border-black" type='number' onChange={(e) => updateTimeServ(2, e.target.value)}/> min</div>
         </div>
 
-        <div><label>Ingredients</label><input className="border-2" type='text' value={currIngd} 
+        <div className="flex flex-row">
+            <label className='mr-4'>Ingredients</label><input className="border-2 basis-4/5" type='text' value={currIngd} 
                 onChange={(e) => {setCurIngd(e.target.value)}}
                 onKeyDown={e => {
                     if (e.key === 'Enter'){
@@ -97,7 +107,8 @@ export default function InsertPage(){
         </div>
         <IngBlock ingredient={ing} delFnc={delIngr}/>
         
-        <div className="my-2"><label>Instructions</label><textarea className="border-2 w-4/5" 
+        <div className="flex flex-row my-2">
+            <label className="mr-3">Instructions</label><textarea className="border-2 basis-4/5" 
         value={currInst} onChange={(e) => {setCurInst(e.target.value)}} onKeyDown={e => {
             if (e.key === 'Enter'){
                 e.preventDefault();

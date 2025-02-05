@@ -14,7 +14,7 @@ export default function TagGrid({tags}:{tags:Promise<user> | Error}){
     const allTags = user.tags;
 
     return (
-         <div className='flex justify-between max-w-[70%] m-auto p-7 flex-wrap gap-y-11'>
+         <div className='flex justify-between max-w-[90%] m-auto p-7 flex-wrap gap-y-11'>
             { allTags &&
                 allTags.map(((t:String, i:number) => (
                     <TagCard key={i} tag={t}/>

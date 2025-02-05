@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import TagGrid from "./components/tagGrid";
 import { getTags } from "./db/mongo";
 import Search from "./components/search";
+import Loading from "./components/loading";
 
 export default function Home() {
  const user = getTags();
@@ -9,7 +10,7 @@ export default function Home() {
   return (
     <div>
       <Search placeholder="Search for a recipe..."/>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading/>}>
         <TagGrid tags={user}/>
       </Suspense>
     </div>

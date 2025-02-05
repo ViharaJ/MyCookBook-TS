@@ -2,6 +2,7 @@
 import { MongoClient, ObjectId } from "mongodb";
 import { recipe, user } from "./definitions";
 
+
 // Replace the uri string with your connection string.
 const uri:string = process.env.MONGO_URI!;
 
@@ -65,15 +66,27 @@ export async function getRecByID(id:string):Promise<recipe>{
   }  
 }
 
-export async function getRecsByName(name: string, offset:number, recsPerPage: number): Promise<recipe[]>{
+export async function getRecsByName(name: string, offset:number, recsPerPage: number, listOfTag?: string[], listOfIngred?:string[]): Promise<recipe[]>{
   const client = new MongoClient(uri);
-
+  
   try {
     const database = client.db('RecInfo');
     const recCol = database.collection<recipe>('Recipes');
-    const search = "(?i)" + name + "(?-i)";
+    let q:any = {ownder:"zero"} //find fix for this
 
-    const recs = await recCol.find<recipe>({ownder:"zero", name: {$regex: search, $options:"i"}}, {skip: offset}).limit(recsPerPage).toArray();
+    if (name.length > 0){
+      const search = "(?i)" + name + "(?-i)"; 
+      q.name =  {$regex: search, $options:"i"};
+    }
+    if (listOfTag != null && listOfTag.length > 0){
+      q.ingred = listOfTag;
+    }
+    if (listOfIngred != null && listOfIngred.length > 0){
+      q.tags = listOfIngred;
+    }
+
+
+    const recs = await recCol.find<recipe>(q, {skip: offset}).limit(recsPerPage).toArray();
 
     return JSON.parse(JSON.stringify(recs));
    
@@ -100,9 +113,7 @@ export async function getTotalResults(name: string, recsPerPage: number): Promis
 
 }
 
-//TODO: Insert recipe
-
-export async function submitRec(newR: any): Promise<boolean> {
+export async function submitRec(newR: any): Promise<String | null> {
   const client = new MongoClient(uri);
 
   try {
@@ -111,9 +122,13 @@ export async function submitRec(newR: any): Promise<boolean> {
 
     const submitted = await recCol.insertOne(newR);
     
-    return submitted.acknowledged;
-   
+    if (submitted.acknowledged){
+      console.log("inside server, ", submitted.insertedId.toString());
+      return submitted.insertedId.toString();
+    }
+    return null;
   } finally {
     client.close();
   }  
 }
+

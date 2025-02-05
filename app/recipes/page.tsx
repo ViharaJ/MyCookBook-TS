@@ -3,6 +3,7 @@ import RecGrid from "../components/recGrid";
 import Search from "../components/search";
 import Pagination from "../components/pagination";
 import { getTotalResults } from "../db/mongo";
+import Loading from "../components/loading";
 
 export default async function Page(props: {
     searchParams?: Promise<{
@@ -20,7 +21,7 @@ export default async function Page(props: {
     return (
         <div>
             <Search placeholder="Look through recipes..."/>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loading/>}>
                 <RecGrid query={query} currentPage={currentPage} recsPerPage={perPage}/>
             </Suspense>
             <Pagination totalPages={totalPages}/>

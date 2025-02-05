@@ -25,7 +25,9 @@ export default function RootLayout({
         className={`${geistMono.variable} antialiased`}
       >
         <Navbar/>
-        {children}
+        <div className="w-[80%] m-auto">
+          {children}
+        </div>
       </body>
     </html>
   );
